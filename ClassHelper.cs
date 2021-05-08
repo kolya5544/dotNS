@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -146,6 +147,11 @@ namespace dotNS.Classes
 
     public class PublicRegionInfo
     {
+        public Bitmap GetFlag()
+        {
+            return Utilities.GetPicture(FlagURL);
+        }
+
         public string Name;
         public string Factbook;
         public int NumNations;
@@ -164,6 +170,11 @@ namespace dotNS.Classes
 
     public class PublicNationInfo
     {
+        public Bitmap GetFlag()
+        {
+            return Utilities.GetPicture(FlagURL);
+        }
+
         public string Name;
         public string Type;
         public string FullName;

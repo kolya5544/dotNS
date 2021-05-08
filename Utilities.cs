@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -72,6 +73,14 @@ namespace dotNS
                 }
             }
             return null;
+        }
+
+        public static Bitmap GetPicture(string url)
+        {
+            WebClient web = new WebClient();
+            byte[] data = web.DownloadData(url);
+            Bitmap bmp = new Bitmap(new MemoryStream(data));
+            return bmp;
         }
 
         public static string FindProperty(XmlNodeList nodes, string name, int depth = 0)
