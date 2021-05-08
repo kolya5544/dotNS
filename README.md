@@ -1,5 +1,5 @@
 # dotNS
-A C# library for NationStates API access. Developed by [The Empire of IKTeam (Our Glorious Nation)](https://www.nationstates.net/nation=ikteam)
+A C# library for NationStates API access. Developed by [The Empire of IKTeam (Our Glorious Nation)](https://www.nationstates.net/nation=ikteam) ![Flag of Our Glorious Nation](https://img.nk.ax/sYDVqGRcFCK.png)
 
 ## Features
 * High level API access to nation and region information, some public and private shards.
