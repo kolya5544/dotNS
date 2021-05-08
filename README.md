@@ -65,6 +65,17 @@ PublicRegionInfo info = api.GetRegionInfo("region name");
 // Access information you need
 Console.WriteLine($"The founder is {info.Founder} and there are {info.NumNations} in this region.");
 ```
+#### Verification API
+```cs
+using dotNS;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Make a call to the API
+bool result = api.Verify("nation name", "code");
+// Output "Correct!" if the code is correct, or "Incorrect!" if it isn't
+Console.WriteLine(result ? "Correct!" : "Incorrect!");
+```
 #### Respond to an issue
 ```cs
 using dotNS;

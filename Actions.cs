@@ -343,6 +343,18 @@ namespace dotNS
             return nsinfo;
         }
 
+        public static bool Verify(this DotNS api, string nation, string code)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("a", "verify");
+            nvc.Add("nation", nation);
+            nvc.Add("checksum", code);
+            var resp = Utilities.API(nvc);
+            string stringResp = Utilities.StrResp(resp).Trim();
+            if (stringResp == "1") return true;
+            return false;
+        }
+
         public static XmlNodeList AddressIssue(this DotNS api, Issue issue, IssueOption option)
         {
             if (!api.IsAuthed) throw new Exception("Not authentificated.");
