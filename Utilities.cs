@@ -30,7 +30,7 @@ namespace dotNS
             return query;
         }
 
-        public static HttpResponseMessage API(NameValueCollection nvc, string pass=null, long pin=0)
+        public static HttpResponseMessage API(NameValueCollection nvc, string pass = null, long pin = 0, string userAgent = "DotNS Default UserAgent nk.ax")
         {
             using (HttpClient http = new HttpClient())
             {
@@ -43,7 +43,7 @@ namespace dotNS
                 {
                     http.DefaultRequestHeaders.Add("X-Password", pass);
                 }
-                http.DefaultRequestHeaders.Add("User-Agent", "DotNS Test Build nk.ax");
+                http.DefaultRequestHeaders.Add("User-Agent", userAgent);
                 string url = $"https://www.nationstates.net/cgi-bin/api.cgi?{GetRequest(nvc)}";
                 var rtsk = http.GetAsync(url); rtsk.Wait();
                 if (rtsk.Result.StatusCode == HttpStatusCode.Forbidden) { throw new Exception("Not authentificated."); }

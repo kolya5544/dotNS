@@ -16,7 +16,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("nation", nation);
-            var resp = Utilities.API(nvc);
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml);
 
@@ -176,7 +176,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("region", region);
-            var resp = Utilities.API(nvc);
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "/REGION/*");
 
@@ -250,7 +250,7 @@ namespace dotNS
             var nvc = new NameValueCollection();
             nvc.Add("nation", api.Nation);
             nvc.Add("q", "dossier+issues+issuesummary+nextissue+nextissuetime+notices+packs+ping+rdossier+unread");
-            var resp = Utilities.API(nvc, null, api.Pin);
+            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml);
 
@@ -349,7 +349,7 @@ namespace dotNS
             nvc.Add("a", "verify");
             nvc.Add("nation", nation);
             nvc.Add("checksum", code);
-            var resp = Utilities.API(nvc);
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
             string stringResp = Utilities.StrResp(resp).Trim();
             if (stringResp == "1") return true;
             return false;
@@ -362,7 +362,7 @@ namespace dotNS
             nvc.Add("nation", api.Nation);
             nvc.Add("issue", issue.ID.ToString());
             nvc.Add("option", option.ID.ToString());
-            var resp = Utilities.API(nvc, null, api.Pin);
+            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;
@@ -374,7 +374,7 @@ namespace dotNS
             if (type == RequestType.Nation) { nvc.Add("nation", name); } else { nvc.Add("region", name); }
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+');
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc);
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             List<string> result = new List<string>();
@@ -398,7 +398,7 @@ namespace dotNS
             if (type == RequestType.Nation) { nvc.Add("nation", name); } else { nvc.Add("region", name); }
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+');
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc);
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;
@@ -416,7 +416,7 @@ namespace dotNS
             nvc.Add("nation", api.Nation);
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+').ToLower();
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, api.Pin);
+            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             List<string> result = new List<string>();
@@ -441,7 +441,7 @@ namespace dotNS
             nvc.Add("nation", api.Nation);
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+').ToLower();
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, api.Pin);
+            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;

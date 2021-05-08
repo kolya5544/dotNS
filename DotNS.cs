@@ -17,6 +17,9 @@ namespace dotNS
         protected long _Pin = -1;
         public long Pin { get { return _Pin; } }
 
+        protected string _UserAgent;
+        public string UserAgent { get { return _UserAgent; } set { _UserAgent = value; } }
+
         public DotNS()
         {
 
@@ -39,9 +42,10 @@ namespace dotNS
             return false;
         }
 
-        public DotNS(string nation, string password)
+        public DotNS(string nation, string password, string useragent = "DotNS Default UserAgent nk.ax")
         {
             _Nation = nation;
+            UserAgent = useragent;
             UpdatePin(nation, password);
         }
     }

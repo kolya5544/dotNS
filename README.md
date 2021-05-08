@@ -28,6 +28,14 @@ or just use this constructor:
 // Initializes NS API wrapper and automatically acquires a PIN for private API
 DotNS api = new DotNS("nation name", "password");
 ```
+You can (and actually should) also define your own UserAgent. You can do it either using a constructor:
+```cs
+DotNS api = new DotNS("nation name", "password", "UserAgent");
+```
+or after initialization
+```cs
+api.UserAgent = "UserAgent";
+```
 ### High level API example
 #### Get basic nation information
 ```cs
@@ -152,7 +160,7 @@ using System.Xml;
 NameValueCollection nvc = new NameValueCollection();
 nvc.Add("nation", "ikteam");
 nvc.Add("q", "leader");
-var resp = Utilities.API(nvc); // You can also define pass (null by default) and pin (null by default) like Utilities.API(nvc, pass, PIN);
+var resp = Utilities.API(nvc); // You can also define pass (null by default) and pin (null by default) like Utilities.API(nvc, pass, PIN). You can also define UserAgent as the fourth argument.
 // Use StrResp to convert the API response to XML string
 string xml = Utilities.StrResp(resp);
  // Use Parse to convert the XML string to NodeList
