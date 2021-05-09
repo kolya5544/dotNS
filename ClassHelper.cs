@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace dotNS.Classes
 {
@@ -33,6 +36,7 @@ namespace dotNS.Classes
             Dossier, Issues, IssueSummary, NextIssue, NextIssueTime, Notices, Packs, Ping, RDossier, Unread
         }
     }
+
     public enum RequestType
     {
         Nation, Region
@@ -47,6 +51,37 @@ namespace dotNS.Classes
         Communications = 16, 
         Embassies = 32, 
         Polls = 64
+    }
+
+    public class DailyDataDump
+    {
+        public byte[] Content;
+        public byte[] Decompressed;
+        public XmlNodeList Xml;
+
+        public byte[] Decompress()
+        {
+            using (var from = new MemoryStream(Content))
+            using (var to = new MemoryStream())
+            using (var gZipStream = new GZipStream(from, CompressionMode.Decompress))
+            {
+                gZipStream.CopyTo(to);
+                byte[] ba = to.ToArray();
+                Decompressed = ba;
+                return ba;
+            }
+        }
+
+        public XmlNodeList GetXml()
+        {
+            byte[] cont = Decompressed;
+            if (Decompressed is null)
+            {
+                cont = Decompress();
+            }
+            Xml = Utilities.Parse(Encoding.UTF8.GetString(cont), "*");
+            return Xml;
+        }
     }
 
     public class Notice

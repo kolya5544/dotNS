@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -450,6 +452,17 @@ namespace dotNS
         public static XmlNodeList RawPrivateShard(this DotNS api, Shards.PrivateShard shard)
         {
             return RawPrivateShard(api, new Shards.PrivateShard[] { shard });
+        }
+
+        public static DailyDataDump GetDump(this DotNS api, RequestType type = RequestType.Nation)
+        {
+            WebClient web = new WebClient();
+            byte[] data = web.DownloadData(type == RequestType.Nation ? "https://www.nationstates.net/pages/nations.xml.gz" : "https://www.nationstates.net/pages/regions.xml.gz");
+            var ddd = new DailyDataDump()
+            {
+                Content = data
+            };
+            return ddd;
         }
     }
 }

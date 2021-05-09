@@ -114,6 +114,24 @@ string[] info = api.PrivateShard(new Shards.PrivateShard[] { Shards.PrivateShard
 Console.WriteLine($"Next issue time: {info[0]}"); // "Next issue time: 123456789"
 Console.WriteLine($"Next issue {info[1]}"); // "Next issue in 3 hours"
 ```
+#### World daily dumps
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get region dump
+DailyDataDump dump = api.GetDump(RequestType.Region);
+// Save as region.xml.gz
+File.WriteAllBytes("region.xml.gz", dump.Content);
+// Save as region.xml
+File.WriteAllBytes("region.xml", dump.Decompress());
+// Open as XML
+XmlNodeList xml = dump.GetXml();
+XmlNodeList regionsXml = xml.TakeNodes("regions");
+Console.WriteLine($"There seem to be {regionsXml.Count} regions!");
+```
 ### Low level API example
 #### Get advanced public shard information
 ```cs
