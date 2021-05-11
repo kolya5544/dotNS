@@ -118,6 +118,7 @@ Console.WriteLine($"Next issue {info[1]}"); // "Next issue in 3 hours"
 ```cs
 using dotNS;
 using dotNS.Classes;
+using System.Xml;
 <...>
 // Create an API wrapper
 DotNS api = new DotNS();

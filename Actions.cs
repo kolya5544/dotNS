@@ -362,6 +362,7 @@ namespace dotNS
             if (!api.IsAuthed) throw new Exception("Not authentificated.");
             var nvc = new NameValueCollection();
             nvc.Add("nation", api.Nation);
+            nvc.Add("c", "issue");
             nvc.Add("issue", issue.ID.ToString());
             nvc.Add("option", option.ID.ToString());
             var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
