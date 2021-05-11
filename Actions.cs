@@ -315,7 +315,7 @@ namespace dotNS
                             issue.Editor = child.FindProperty("editor");
                             issue.Pic1 = child.FindProperty("pic1");
                             issue.Pic2 = child.FindProperty("pic2");
-                            issue.ID = int.Parse(child.FindProperty("id"));
+                            issue.ID = int.Parse(node.ChildNodes.FindProperty("id"));
                             var options = new List<IssueOption>();
                             foreach (XmlNode n2 in child)
                             {
