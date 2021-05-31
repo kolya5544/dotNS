@@ -133,6 +133,19 @@ XmlNodeList xml = dump.GetXml();
 XmlNodeList regionsXml = xml.TakeNodes("regions");
 Console.WriteLine($"There seem to be {regionsXml.Count} regions!");
 ```
+#### Nation census statistics
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get Black Market data for "IKTeam" nation between Feb 4 2021 and May 31 2021 (UNIX timestamp)
+List<CensusNode> censusData = api.GetCensus("IKTeam", Census.BlackMarket, 1612456412, 1622456426);
+// Output required information
+CensusNode node = censusData[10];
+Console.WriteLine($"On {DateTimeOffset.FromUnixTimeSeconds(node.timestamp):dd/MM/yyyy HH:mm:ss} the value of Black Market in IKTeam was {node.value}");
+```
 ### Low level API example
 #### Get advanced public shard information
 ```cs
