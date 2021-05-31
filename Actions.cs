@@ -371,6 +371,28 @@ namespace dotNS
             return nodelist;
         }
 
+        public static List<CensusNode> GetCensus(this DotNS api, string name, Census stat, long fromTS = -1, long toTS = -1)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("nation", name);
+            if (fromTS != -1 && toTS == -1) toTS = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            nvc.Add("q", $"census;scale={(int)stat};mode=history{(fromTS != -1 ? $";from={fromTS};to={toTS}" : "")}");
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            string xml = Utilities.StrResp(resp);
+            var nodelist = Utilities.Parse(xml, "/NATION/CENSUS/SCALE/*");
+            List<CensusNode> nodes = new List<CensusNode>();
+            foreach (XmlNode node in nodelist)
+            {
+                long timestamp = long.Parse(node.FirstChild.InnerText);
+                double score = double.Parse(node.LastChild.InnerText, CultureInfo.InvariantCulture);
+                var tn = new CensusNode();
+                tn.timestamp = timestamp;
+                tn.value = score;
+                nodes.Add(tn);
+            }
+            return nodes;
+        }
+
         public static string[] PublicShard(this DotNS api, string name, Shards.PublicShard[] shards, RequestType type = RequestType.Nation)
         {
             var nvc = new NameValueCollection();

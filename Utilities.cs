@@ -22,7 +22,7 @@ namespace dotNS
 
             foreach (string key in nvc.Keys)
             {
-                query += $"{key}={HttpUtility.UrlEncode(nvc[key])}&";
+                query += $"{key}={nvc[key]}&";
             }
 
             query = query.TrimEnd('&');
