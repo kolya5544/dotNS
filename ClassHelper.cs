@@ -127,7 +127,9 @@ namespace dotNS.Classes
         Weather = 41,
         Welfare = 28,
         Endorsements = 66,
-        YouthRebelliousness = 54
+        YouthRebelliousness = 54,
+        Patriotism = 87,
+        FoodQuality = 88
     }
 
     public enum RequestType
