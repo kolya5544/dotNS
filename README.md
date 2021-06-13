@@ -146,6 +146,20 @@ List<CensusNode> censusData = api.GetCensus("IKTeam", Census.BlackMarket, 161245
 CensusNode node = censusData[10];
 Console.WriteLine($"On {DateTimeOffset.FromUnixTimeSeconds(node.timestamp):dd/MM/yyyy HH:mm:ss} the value of Black Market in IKTeam was {node.value}");
 ```
+#### Get flag of a nation or region
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get basic information of nation/region
+// -> PublicRegionInfo info = api.GetRegionInfo("region");
+PublicNationInfo info = api.GetNationInfo("nation");
+// Get flag.
+System.Drawing.Bitmap bmp = info.GetFlag();
+bmp.Save("flag.png");
+```
 ### Low level API example
 #### Get advanced public shard information
 ```cs
