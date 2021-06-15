@@ -3,6 +3,9 @@ A C# library for NationStates API access. Developed by [The Empire of IKTeam (Ou
 
 ![Flag of Our Glorious Nation](https://img.nk.ax/sYDVqGRcFCK.png)
 
+**We are now on NuGet!**
+[![We are now on NuGet!](https://img.shields.io/nuget/dt/dotNS?label=NuGet%20downloads)](https://www.nuget.org/packages/dotNS)
+
 ## Features
 * High level API access to nation and region information, some public and private shards.
 * Low level API access for public and private shards
