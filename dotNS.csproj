@@ -1,11 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>kolya5544</Authors>
+    <Description>A C# library for NationStates API access.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/kolya5544/dotNS</PackageProjectUrl>
+    <PackageIcon>favicon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/kolya5544/dotNS</RepositoryUrl>
+    <RepositoryType>public</RepositoryType>
+    <PackageTags>nationstates, rest, xml, api, library</PackageTags>
+    <Version>0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Desktop\favicon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

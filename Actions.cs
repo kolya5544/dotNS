@@ -40,7 +40,7 @@ namespace dotNS
                     case "unstatus":
                         nsinfo.WAStatus = node.InnerText; break;
                     case "endorsements":
-                        string[] endors = node.InnerText.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                        string[] endors = node.InnerText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         if (endors.Length == 0 && node.InnerText.Length > 1)
                         {
                             endors = new string[1] { node.InnerText };
@@ -194,7 +194,7 @@ namespace dotNS
                     case "numnations":
                         nsinfo.NumNations = int.Parse(node.InnerText); break;
                     case "nations":
-                        string[] nations = node.InnerText.Split(':', StringSplitOptions.RemoveEmptyEntries);
+                        string[] nations = node.InnerText.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                         if (nations.Length == 0) nations = new string[1] { node.InnerText };
                         nsinfo.Nations = nations;
                         break;
