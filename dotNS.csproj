@@ -4,9 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>kolya5544</Authors>
+    <Company>kolya5544</Company>
     <Description>A C# library for NationStates API access.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/kolya5544/dotNS</PackageProjectUrl>
+    <PackageDescription>A C# library for NationStates API access.</PackageDescription>
     <PackageIcon>favicon.png</PackageIcon>
     <RepositoryUrl>https://github.com/kolya5544/dotNS</RepositoryUrl>
     <RepositoryType>public</RepositoryType>
