@@ -240,7 +240,7 @@ namespace dotNS.Classes
                     }
                     else
                     {
-                        _FlagURL = $"https://www.nationstates.net/images/cards/s{(int)Season}/{_FlagURL}.jpg";
+                        _FlagURL = $"https://www.nationstates.net/images/cards/s{(int)Season}/{_FlagURL}{(_FlagURL.EndsWith(".png") ? "" : ".jpg")}";
                     }
                 }
                 return _FlagURL;
