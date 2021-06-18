@@ -137,6 +137,12 @@ namespace dotNS.Classes
         Nation, Region
     }
 
+    public enum CardSeason
+    {
+        Season1 = 1,
+        Season2 = 2
+    }
+
     public enum Authority
     {
         Executive = 1, 
@@ -174,9 +180,94 @@ namespace dotNS.Classes
             {
                 cont = Decompress();
             }
-            Xml = Utilities.Parse(Encoding.UTF8.GetString(cont), "*");
+            Xml = Utilities.Parse(Encoding.UTF8.GetString(cont).Replace("&", "&amp;"), "*");
             return Xml;
         }
+    }
+    
+    public enum MarketType
+    {
+        bid, ask
+    }
+
+    public class Market
+    {
+        public string Nation;
+        public double Price;
+        public long Timestamp;
+        public MarketType Type;
+    }
+
+    public class Trade
+    {
+        public string Buyer;
+        public string Seller;
+        public double Price;
+        public long Timestamp;
+    }
+
+    public enum CardCategory
+    {
+        legendary,
+        epic,
+        ultrarare,
+        rare,
+        uncommon,
+        common
+    }
+
+    public class IncompleteTradingCard
+    {
+        public long ID;
+        public CardCategory Category;
+        public CardSeason Season;
+    }
+
+    public class TradingCard
+    {
+        public long ID;
+        public CardCategory Category;
+        private string _FlagURL;
+        private Bitmap BMPFlag;
+        public string FlagURL
+        {
+            get {
+                if (!_FlagURL.Contains("https://"))
+                {
+                    if (_FlagURL.Contains("uploads/"))
+                    {
+                        _FlagURL = $"https://www.nationstates.net/images/cards/s{(int)Season}/{_FlagURL}";
+                    }
+                    else
+                    {
+                        _FlagURL = $"https://www.nationstates.net/images/cards/s{(int)Season}/{_FlagURL}.jpg";
+                    }
+                }
+                return _FlagURL;
+            }
+            set
+            {
+                if (_FlagURL is null)
+                {
+                    _FlagURL = value;
+                }
+                else
+                {
+                    throw new Exception("Value is read-only");
+                }
+            }
+        }
+        public Bitmap Flag { get { if (BMPFlag is null) { BMPFlag = Utilities.GetPicture(FlagURL); return BMPFlag; } return BMPFlag; } }
+        public string Govt;
+        public double MarketValue;
+        public List<Market> Markets;
+        public string Name;
+        public List<string> Owners;
+        public string Region;
+        public CardSeason Season;
+        public string Slogan;
+        public List<Trade> Trades;
+        public string Type;
     }
 
     public class Notice
@@ -277,10 +368,14 @@ namespace dotNS.Classes
 
     public class PublicRegionInfo
     {
+        [Obsolete("Use .Flag property instead")]
         public Bitmap GetFlag()
         {
             return Utilities.GetPicture(FlagURL);
         }
+
+        public Bitmap _Flag;
+        public Bitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
         public string Factbook;
@@ -300,10 +395,14 @@ namespace dotNS.Classes
 
     public class PublicNationInfo
     {
+        [Obsolete("Use .Flag property instead")]
         public Bitmap GetFlag()
         {
             return Utilities.GetPicture(FlagURL);
         }
+
+        public Bitmap _Flag;
+        public Bitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
         public string Type;

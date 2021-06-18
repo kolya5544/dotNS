@@ -345,6 +345,46 @@ namespace dotNS
             return nsinfo;
         }
 
+        public static List<IncompleteTradingCard> GetDeck(this DotNS api, string nation)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("q", $"cards+deck;nationname={nation}");
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            string xml = Utilities.StrResp(resp);
+            var nodelist = Utilities.Parse(xml, "/CARDS/DECK/*");
+
+            var result = new List<IncompleteTradingCard>();
+
+            foreach (XmlNode card in nodelist)
+            {
+                IncompleteTradingCard tc = new IncompleteTradingCard();
+                foreach (XmlNode cProp in card.ChildNodes) {
+                    switch (cProp.Name.ToLower())
+                    {
+                        case "cardid":
+                            tc.ID = long.Parse(cProp.InnerText); break;
+                        case "category":
+                            tc.Category = (CardCategory)Enum.Parse(typeof(CardCategory), cProp.InnerText.Replace("-", "")); break;
+                        case "season":
+                            tc.Season = (CardSeason)int.Parse(cProp.InnerText); break;
+                    }
+                }
+                result.Add(tc);
+            }
+            return result;
+        }
+
+        public static void SendTelegram(this DotNS api, string clientKey, string tgid, string secretKey, string recipient)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("a", "sendTG");
+            nvc.Add("client", clientKey);
+            nvc.Add("tgid", tgid);
+            nvc.Add("key", secretKey);
+            nvc.Add("to", recipient);
+            Utilities.API(nvc, null, 0, api.UserAgent);
+        }
+
         public static bool Verify(this DotNS api, string nation, string code)
         {
             var nvc = new NameValueCollection();
@@ -391,6 +431,98 @@ namespace dotNS
                 nodes.Add(tn);
             }
             return nodes;
+        }
+
+        public static TradingCard GetCard(this DotNS api, long cardId, CardSeason season)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("q", $"card+owners+info+trades+markets;cardid={cardId};season={(int)season}");
+            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            string xml = Utilities.StrResp(resp);
+            var nodelist = Utilities.Parse(xml, "/CARD/*");
+            var card = new TradingCard();
+            foreach (XmlNode node in nodelist)
+            {
+                switch (node.Name.ToLower())
+                {
+                    case "cardid":
+                        card.ID = int.Parse(node.InnerText); break;
+                    case "category":
+                        card.Category = (CardCategory)Enum.Parse(typeof(CardCategory), node.InnerText.Replace("-", "")); break;
+                    case "flag":
+                        card.FlagURL = node.InnerText; break;
+                    case "govt":
+                        card.Govt = node.InnerText; break;
+                    case "market_value":
+                        card.MarketValue = double.Parse(node.InnerText, CultureInfo.InvariantCulture); break;
+                    case "markets":
+                        var marketNodes = node.ChildNodes;
+                        card.Markets = new List<Market>();
+                        foreach (XmlNode mNode in marketNodes)
+                        {
+                            Market m = new Market();
+                            var mProperties = mNode.ChildNodes;
+                            foreach (XmlNode marketProp in mProperties)
+                            {
+                                switch (marketProp.Name.ToLower())
+                                {
+                                    case "nation":
+                                        m.Nation = marketProp.InnerText; break;
+                                    case "price":
+                                        m.Price = double.Parse(marketProp.InnerText, CultureInfo.InvariantCulture); break;
+                                    case "timestamp":
+                                        m.Timestamp = long.Parse(marketProp.InnerText); break;
+                                    case "type":
+                                        m.Type = (MarketType)Enum.Parse(typeof(MarketType), marketProp.InnerText); break;
+                                }
+                            }
+                            card.Markets.Add(m);
+                        }
+                        break;
+                    case "name":
+                        card.Name = node.InnerText; break;
+                    case "owners":
+                        card.Owners = new List<string>();
+                        var ownerNodes = node.ChildNodes;
+                        foreach (XmlNode oNode in ownerNodes)
+                        {
+                            card.Owners.Add(oNode.InnerText);
+                        }
+                        break;
+                    case "trades":
+                        card.Trades = new List<Trade>();
+                        var tradeNodes = node.ChildNodes;
+                        foreach (XmlNode tNode in tradeNodes)
+                        {
+                            Trade t = new Trade();
+                            var tProps = tNode.ChildNodes;
+                            foreach (XmlNode tradeProp in tProps)
+                            {
+                                switch (tradeProp.Name.ToLower())
+                                {
+                                    case "buyer":
+                                        t.Buyer = tradeProp.InnerText; break;
+                                    case "price":
+                                        t.Price = string.IsNullOrEmpty(tradeProp.InnerText) ? 0d : double.Parse(tradeProp.InnerText, CultureInfo.InvariantCulture); break;
+                                    case "seller":
+                                        t.Seller = tradeProp.InnerText; break;
+                                    case "timestamp":
+                                        t.Timestamp = long.Parse(tradeProp.InnerText); break;
+                                }
+                            }
+                        }
+                        break;
+                    case "slogan":
+                        card.Slogan = node.InnerText; break;
+                    case "region":
+                        card.Region = node.InnerText; break;
+                    case "season":
+                        card.Season = (CardSeason)int.Parse(node.InnerText); break;
+                    case "type":
+                        card.Type = node.InnerText; break;
+                }
+            }
+            return card;
         }
 
         public static string[] PublicShard(this DotNS api, string name, Shards.PublicShard[] shards, RequestType type = RequestType.Nation)
@@ -481,6 +613,17 @@ namespace dotNS
         {
             WebClient web = new WebClient();
             byte[] data = web.DownloadData(type == RequestType.Nation ? "https://www.nationstates.net/pages/nations.xml.gz" : "https://www.nationstates.net/pages/regions.xml.gz");
+            var ddd = new DailyDataDump()
+            {
+                Content = data
+            };
+            return ddd;
+        }
+
+        public static DailyDataDump GetDump(this DotNS api, CardSeason season)
+        {
+            WebClient web = new WebClient();
+            byte[] data = web.DownloadData($"https://www.nationstates.net/pages/cardlist_S{(int)season}.xml.gz");
             var ddd = new DailyDataDump()
             {
                 Content = data

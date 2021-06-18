@@ -127,6 +127,8 @@ using System.Xml;
 DotNS api = new DotNS();
 // Get region dump
 DailyDataDump dump = api.GetDump(RequestType.Region);
+// -> DailyDataDump dump = api.GetDump(RequestType.Nation);
+// -> DailyDataDump dump = api.GetDump(CardSeason.Season1);
 // Save as region.xml.gz
 File.WriteAllBytes("region.xml.gz", dump.Content);
 // Save as region.xml
@@ -160,8 +162,48 @@ DotNS api = new DotNS();
 // -> PublicRegionInfo info = api.GetRegionInfo("region");
 PublicNationInfo info = api.GetNationInfo("nation");
 // Get flag.
-System.Drawing.Bitmap bmp = info.GetFlag();
+System.Drawing.Bitmap bmp = info.Flag;
 bmp.Save("flag.png");
+```
+#### Get all cards of a nation
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get deck of a nation
+List<IncompleteTradingCard> deck = api.GetDeck("nation");
+// Output info
+Console.WriteLine($"This nation has {deck.Count} total cards!");
+```
+#### Get information of a card
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get information of a card
+TradingCard card = api.GetCard(1, CardSeason.Season2);
+// Output information
+Console.WriteLine($"Card name: {card.Name}, Market value: {card.MarketValue}");
+Console.WriteLine($"Card flag resolution: {card.Flag.Width}:{card.Flag.Height}");
+```
+#### Send a telegram (NOT TESTED)
+```cs
+using dotNS;
+using dotNS.Classes;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Prepare a message
+string clientId = "Your client ID";
+string tgID = "ID of the telegram";
+string secretKey = "Key to send the telegram";
+string recipient = "nation";
+// Send telegram
+api.SendTelegram(clientId, tgID, secretKey, recipient);
 ```
 ### Low level API example
 #### Get advanced public shard information
