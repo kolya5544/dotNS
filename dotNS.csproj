@@ -13,8 +13,8 @@
     <RepositoryUrl>https://github.com/kolya5544/dotNS</RepositoryUrl>
     <RepositoryType>public</RepositoryType>
     <PackageTags>nationstates, rest, xml, api, library</PackageTags>
-    <Version>0.3</Version>
-    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <Version>0.3.1</Version>
+    <AssemblyVersion>0.3.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
