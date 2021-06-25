@@ -510,6 +510,7 @@ namespace dotNS
                                         t.Timestamp = long.Parse(tradeProp.InnerText); break;
                                 }
                             }
+                            card.Trades.Add(t);
                         }
                         break;
                     case "slogan":
