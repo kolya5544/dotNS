@@ -4,6 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -180,7 +182,7 @@ namespace dotNS.Classes
             {
                 cont = Decompress();
             }
-            Xml = Utilities.Parse(Encoding.UTF8.GetString(cont).Replace("&", "&amp;"), "*");
+            Xml = Utilities.Parse(Encoding.UTF8.GetString(cont).Replace("&amp;", "&abcamp;").Replace("&", "&amp;").Replace("&abcamp;", "&amp;"), "*");
             return Xml;
         }
     }

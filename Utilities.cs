@@ -53,6 +53,7 @@ namespace dotNS
 
         public static XmlNodeList Parse(string xml, string path = "/NATION/*")
         {
+            xml = WebUtility.HtmlDecode(xml);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             var nodes = doc.SelectNodes(path);
