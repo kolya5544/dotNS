@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
@@ -54,6 +55,7 @@ namespace dotNS
         public static XmlNodeList Parse(string xml, string path = "/NATION/*")
         {
             xml = WebUtility.HtmlDecode(xml);
+            xml = Regex.Replace(xml, "&(?!(amp|apos|quot|lt|gt);)", "&amp;");
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             var nodes = doc.SelectNodes(path);
