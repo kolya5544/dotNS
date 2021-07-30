@@ -112,7 +112,7 @@ namespace dotNS
         public static string StrResp(HttpResponseMessage resp)
         {
             var tsk = resp.Content.ReadAsStringAsync(); tsk.Wait();
-            return tsk.Result;
+            return tsk.Result.Replace("“","\"").Replace("”","\"");
         }
 
         internal static Authority[] ParseAuthority(string text)
