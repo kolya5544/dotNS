@@ -18,7 +18,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("nation", nation);
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml);
 
@@ -178,7 +178,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("region", region);
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "/REGION/*");
 
@@ -252,7 +252,7 @@ namespace dotNS
             var nvc = new NameValueCollection();
             nvc.Add("nation", api.Nation);
             nvc.Add("q", "dossier+issues+issuesummary+nextissue+nextissuetime+notices+packs+ping+rdossier+unread");
-            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
+            var resp = api.API(nvc, null, api.Pin);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml);
 
@@ -349,7 +349,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("q", $"cards+deck;nationname={nation}");
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "/CARDS/DECK/*");
 
@@ -382,7 +382,7 @@ namespace dotNS
             nvc.Add("tgid", tgid);
             nvc.Add("key", secretKey);
             nvc.Add("to", recipient);
-            Utilities.API(nvc, null, 0, api.UserAgent);
+            api.API(nvc);
         }
 
         public static bool Verify(this DotNS api, string nation, string code)
@@ -391,7 +391,7 @@ namespace dotNS
             nvc.Add("a", "verify");
             nvc.Add("nation", nation);
             nvc.Add("checksum", code);
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string stringResp = Utilities.StrResp(resp).Trim();
             if (stringResp == "1") return true;
             return false;
@@ -405,7 +405,7 @@ namespace dotNS
             nvc.Add("c", "issue");
             nvc.Add("issue", issue.ID.ToString());
             nvc.Add("option", option.ID.ToString());
-            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
+            var resp = api.API(nvc, null, api.Pin);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;
@@ -417,7 +417,7 @@ namespace dotNS
             nvc.Add("nation", name);
             if (fromTS != -1 && toTS == -1) toTS = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             nvc.Add("q", $"census;scale={(int)stat};mode=history{(fromTS != -1 ? $";from={fromTS};to={toTS}" : "")}");
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "/NATION/CENSUS/SCALE/*");
             List<CensusNode> nodes = new List<CensusNode>();
@@ -437,7 +437,7 @@ namespace dotNS
         {
             var nvc = new NameValueCollection();
             nvc.Add("q", $"card+owners+info+trades+markets;cardid={cardId};season={(int)season}");
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "/CARD/*");
             var card = new TradingCard();
@@ -532,7 +532,7 @@ namespace dotNS
             if (type == RequestType.Nation) { nvc.Add("nation", name); } else { nvc.Add("region", name); }
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+');
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             List<string> result = new List<string>();
@@ -556,7 +556,7 @@ namespace dotNS
             if (type == RequestType.Nation) { nvc.Add("nation", name); } else { nvc.Add("region", name); }
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+');
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, 0, api.UserAgent);
+            var resp = api.API(nvc);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;
@@ -574,7 +574,7 @@ namespace dotNS
             nvc.Add("nation", api.Nation);
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+').ToLower();
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
+            var resp = api.API(nvc, null, api.Pin);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             List<string> result = new List<string>();
@@ -599,7 +599,7 @@ namespace dotNS
             nvc.Add("nation", api.Nation);
             string requests = ""; shards.ToList().ForEach(z => { requests += z + "+"; }); requests = requests.TrimEnd('+').ToLower();
             nvc.Add("q", requests);
-            var resp = Utilities.API(nvc, null, api.Pin, api.UserAgent);
+            var resp = api.API(nvc, null, api.Pin);
             string xml = Utilities.StrResp(resp);
             var nodelist = Utilities.Parse(xml, "*");
             return nodelist;

@@ -190,7 +190,7 @@ TradingCard card = api.GetCard(1, CardSeason.Season2);
 Console.WriteLine($"Card name: {card.Name}, Market value: {card.MarketValue}");
 Console.WriteLine($"Card flag resolution: {card.Flag.Width}:{card.Flag.Height}");
 ```
-#### Send a telegram (NOT TESTED)
+#### Send a telegram
 ```cs
 using dotNS;
 using dotNS.Classes;
