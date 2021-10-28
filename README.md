@@ -39,6 +39,12 @@ or after initialization
 ```cs
 api.UserAgent = "UserAgent";
 ```
+
+Also, to disable our API ratelimiting feature (enabled by default), use
+```cs
+api.RateLimit = false;
+```
+
 ### High level API example
 #### Get basic nation information
 ```cs
@@ -240,6 +246,19 @@ foreach (string n in RegionNations)
     // Outputs all nations in a region.
     Console.WriteLine(n);
 }
+```
+#### Using World API
+```cs
+using dotNS;
+using dotNS.Classes;
+using System.Xml;
+<...>
+// Create an API wrapper
+DotNS api = new DotNS();
+// Get number of nations in the world
+XmlNodeList nodes = bot.GetWorld(Shards.World.NumNations);
+string amount = Utilities.FindProperty(nodes, "numnations");
+Console.WriteLine($"There are {amount} nations in the world!");
 ```
 #### Using API directly
 ```cs

@@ -631,5 +631,28 @@ namespace dotNS
             };
             return ddd;
         }
+
+        public static XmlNodeList GetWorld(this DotNS api, Shards.World shard, WorldAssembly council = WorldAssembly.GeneralAssembly, int resolutionID = -1)
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("wa", ((int)council).ToString());
+            string add = "";
+            switch (shard)
+            {
+                case Shards.World.Voters:
+                case Shards.World.VoteTrack:
+                case Shards.World.DelLog:
+                case Shards.World.DelVotes:
+                    add = "+resolution"; break;
+            }
+            nvc.Add("q", $"{shard}{add}");
+            if (resolutionID != -1)
+            {
+                nvc.Add("id", resolutionID.ToString());
+            }
+            var resp = api.API(nvc);
+            string xml = Utilities.StrResp(resp);
+            return Utilities.Parse(xml, "/*");
+        }
     }
 }

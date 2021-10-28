@@ -37,6 +37,12 @@ namespace dotNS.Classes
         {
             Dossier, Issues, IssueSummary, NextIssue, NextIssueTime, Notices, Packs, Ping, RDossier, Unread
         }
+
+        public enum World
+        {
+            //World Assembly API
+            NumNations, NumDelegates, Delegates, Members, Happenings, Proposals, Resultion, Voters, VoteTrack, DelLog, DelVotes, LastResolution
+        }
     }
 
     public class CensusNode
@@ -132,6 +138,12 @@ namespace dotNS.Classes
         YouthRebelliousness = 54,
         Patriotism = 87,
         FoodQuality = 88
+    }
+
+    public enum WorldAssembly
+    {
+        GeneralAssembly = 1,
+        SecurityCouncil = 2
     }
 
     public enum RequestType
