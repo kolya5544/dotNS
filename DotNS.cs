@@ -28,9 +28,11 @@ namespace dotNS
         protected bool _RateLimit = true;
         public bool RateLimit { get { return _RateLimit; } set { _RateLimit = value; _RL_Requests = new List<long>(); } }
 
+        public static string DefaultUA = "DotNS Default UserAgent nk.ax";
+
         public DotNS()
         {
-
+            UserAgent = DefaultUA;
         }
 
         public bool UpdatePin(string nation, string password)
@@ -50,10 +52,10 @@ namespace dotNS
             return false;
         }
 
-        public DotNS(string nation, string password, string useragent = "DotNS Default UserAgent nk.ax")
+        public DotNS(string nation, string password, string useragent = null)
         {
             _Nation = nation;
-            UserAgent = useragent;
+            UserAgent = useragent is null ? DefaultUA : useragent;
             UpdatePin(nation, password);
         }
 
