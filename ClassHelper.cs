@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -242,7 +243,7 @@ namespace dotNS.Classes
         public long ID;
         public CardCategory Category;
         private string _FlagURL;
-        private Bitmap BMPFlag;
+        private SKBitmap BMPFlag;
         public string FlagURL
         {
             get {
@@ -271,7 +272,7 @@ namespace dotNS.Classes
                 }
             }
         }
-        public Bitmap Flag { get { if (BMPFlag is null) { BMPFlag = Utilities.GetPicture(FlagURL); return BMPFlag; } return BMPFlag; } }
+        public SKBitmap Flag { get { if (BMPFlag is null) { BMPFlag = Utilities.GetPicture(FlagURL); return BMPFlag; } return BMPFlag; } }
         public string Govt;
         public double MarketValue;
         public List<Market> Markets;
@@ -383,13 +384,13 @@ namespace dotNS.Classes
     public class PublicRegionInfo
     {
         [Obsolete("Use .Flag property instead")]
-        public Bitmap GetFlag()
+        public SKBitmap GetFlag()
         {
             return Utilities.GetPicture(FlagURL);
         }
 
-        public Bitmap _Flag;
-        public Bitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
+        public SKBitmap _Flag;
+        public SKBitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
         public string Factbook;
@@ -410,13 +411,13 @@ namespace dotNS.Classes
     public class PublicNationInfo
     {
         [Obsolete("Use .Flag property instead")]
-        public Bitmap GetFlag()
+        public SKBitmap GetFlag()
         {
             return Utilities.GetPicture(FlagURL);
         }
 
-        public Bitmap _Flag;
-        public Bitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
+        public SKBitmap _Flag;
+        public SKBitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
         public string Type;

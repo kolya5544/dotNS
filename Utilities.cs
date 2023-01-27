@@ -1,4 +1,5 @@
 ﻿using dotNS.Classes;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -78,11 +79,11 @@ namespace dotNS
             return null;
         }
 
-        public static Bitmap GetPicture(string url)
+        public static SKBitmap GetPicture(string url)
         {
             WebClient web = new WebClient();
             byte[] data = web.DownloadData(url);
-            Bitmap bmp = new Bitmap(new MemoryStream(data));
+            SKBitmap bmp = SKBitmap.Decode(data);
             return bmp;
         }
 
