@@ -32,14 +32,14 @@ namespace dotNS
             return query;
         }
 
-        public static HttpResponseMessage API(NameValueCollection nvc, string pass = null, long pin = 0, string userAgent = "DotNS Default UserAgent nk.ax")
+        public static HttpResponseMessage API(NameValueCollection nvc, string pass = null, string pin = "0", string userAgent = "DotNS Default UserAgent nk.ax")
         {
             using (HttpClient http = new HttpClient())
             {
                 var req = GetRequest(nvc);
-                if (pin != 0)
+                if (pin != "0")
                 {
-                    http.DefaultRequestHeaders.Add("X-Pin", pin.ToString());
+                    http.DefaultRequestHeaders.Add("X-Pin", pin);
                 }
                 if (!string.IsNullOrEmpty(pass))
                 {

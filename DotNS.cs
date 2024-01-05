@@ -17,8 +17,7 @@ namespace dotNS
         protected bool _IsAuthed = false;
         public bool IsAuthed { get { return _IsAuthed; } }
 
-        protected long _Pin = -1;
-        public long Pin { get { return _Pin; } }
+        public string Pin { get; protected set; } = "-1";
 
         protected string _UserAgent;
         public string UserAgent { get { return _UserAgent; } set { _UserAgent = value; } }
@@ -43,8 +42,7 @@ namespace dotNS
             var resp = Utilities.API(nvc, password);
             if (resp.StatusCode == HttpStatusCode.OK)
             {
-                string[] pin = resp.Headers.GetValues("X-Pin").ToArray();
-                _Pin = long.Parse(pin[0]);
+                Pin = resp.Headers.GetValues("X-Pin").First();
                 _IsAuthed = true;
                 _Nation = nation;
                 return true;
@@ -81,7 +79,7 @@ namespace dotNS
             }
         }
 
-        public HttpResponseMessage API(NameValueCollection nvc, string pass = null, long pin = 0)
+        public HttpResponseMessage API(NameValueCollection nvc, string pass = null, string pin = "0")
         {
             ProcessRatelimit(true);
             return Utilities.API(nvc, pass, pin, UserAgent);
