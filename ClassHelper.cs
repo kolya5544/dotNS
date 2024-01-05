@@ -383,13 +383,9 @@ namespace dotNS.Classes
 
     public class PublicRegionInfo
     {
-        [Obsolete("Use .Flag property instead")]
-        public SKBitmap GetFlag()
-        {
-            return Utilities.GetPicture(FlagURL);
-        }
+        private SKBitmap GetFlag() => Utilities.GetPicture(FlagURL);
 
-        public SKBitmap _Flag;
+        private SKBitmap _Flag;
         public SKBitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
@@ -410,13 +406,9 @@ namespace dotNS.Classes
 
     public class PublicNationInfo
     {
-        [Obsolete("Use .Flag property instead")]
-        public SKBitmap GetFlag()
-        {
-            return Utilities.GetPicture(FlagURL);
-        }
+        private SKBitmap GetFlag() => Utilities.GetPicture(FlagURL);
 
-        public SKBitmap _Flag;
+        private SKBitmap _Flag;
         public SKBitmap Flag { get { if (_Flag is null) { _Flag = GetFlag(); } return _Flag; } }
 
         public string Name;
