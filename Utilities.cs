@@ -83,8 +83,12 @@ namespace dotNS
         {
             WebClient web = new WebClient();
             byte[] data = web.DownloadData(url);
-            SKBitmap bmp = SKBitmap.Decode(data);
-            return bmp;
+            if (url.EndsWith(".svg"))
+            {
+                // SVG files not supported
+                return new SKBitmap(1, 1, true);
+            }
+            return SKBitmap.Decode(data);
         }
 
         public static string FindProperty(XmlNodeList nodes, string name, int depth = 0)
