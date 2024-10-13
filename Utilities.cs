@@ -32,25 +32,22 @@ namespace dotNS
             return query;
         }
 
+        private static HttpClient Http = new HttpClient();
         public static HttpResponseMessage API(NameValueCollection nvc, string pass = null, string pin = "0", string userAgent = "DotNS Default UserAgent nk.ax")
         {
-            using (HttpClient http = new HttpClient())
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://www.nationstates.net/cgi-bin/api.cgi?{GetRequest(nvc)}");
+            if (pin != "0")
             {
-                var req = GetRequest(nvc);
-                if (pin != "0")
-                {
-                    http.DefaultRequestHeaders.Add("X-Pin", pin);
-                }
-                if (!string.IsNullOrEmpty(pass))
-                {
-                    http.DefaultRequestHeaders.Add("X-Password", pass);
-                }
-                http.DefaultRequestHeaders.Add("User-Agent", userAgent);
-                string url = $"https://www.nationstates.net/cgi-bin/api.cgi?{GetRequest(nvc)}";
-                var rtsk = http.GetAsync(url); rtsk.Wait();
-                if (rtsk.Result.StatusCode == HttpStatusCode.Forbidden) { throw new Exception("Not authentificated."); }
-                return rtsk.Result;
+                httpRequest.Headers.Add("X-Pin", pin);
             }
+            if (!string.IsNullOrEmpty(pass))
+            {
+                httpRequest.Headers.Add("X-Password", pass);
+            }
+            httpRequest.Headers.Add("User-Agent", userAgent);
+            var response = Http.SendAsync(httpRequest).GetAwaiter().GetResult();
+            if (response.StatusCode == HttpStatusCode.Forbidden) { throw new Exception("Not authentificated."); }
+            return response;
         }
 
         public static XmlNodeList Parse(string xml, string path = "/NATION/*")
@@ -116,8 +113,9 @@ namespace dotNS
 
         public static string StrResp(HttpResponseMessage resp)
         {
-            var tsk = resp.Content.ReadAsStringAsync(); tsk.Wait();
-            return tsk.Result.Replace("“","\"").Replace("”","\"");
+            var str = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            str = str.Replace("“","\"").Replace("”","\"");
+            return str;
         }
 
         internal static Authority[] ParseAuthority(string text)
