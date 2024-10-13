@@ -411,6 +411,50 @@ namespace dotNS
             return nodelist;
         }
 
+        public static (XmlNodeList Xml, string Token) PrepareCreateDispatch(this DotNS api, int category, int subCategory, string title, string text)
+        {
+            if (!api.IsAuthed) throw new Exception("Not authentificated.");
+
+            var nvc = new NameValueCollection
+            {
+                { "nation", api.Nation },
+                { "c", "dispatch" },
+                { "dispatch", "add" },
+                { "category", category.ToString() },
+                { "subcategory", subCategory.ToString() },
+                { "title", WebUtility.UrlEncode(title) },
+                { "text", WebUtility.UrlEncode(text) },
+                { "mode", "prepare" }
+            };
+            var resp = api.API(nvc, null, api.Pin);
+            string xml = Utilities.StrResp(resp);
+            var nodelist = Utilities.Parse(xml, "*");
+            var token = nodelist[0].FirstChild.FirstChild.Value;
+            return (nodelist, token);
+        }
+
+        public static XmlNodeList ExecuteCreateDispatch(this DotNS api, int category, int subCategory, string title, string text, string token)
+        {
+            if (!api.IsAuthed) throw new Exception("Not authentificated.");
+
+            var nvc = new NameValueCollection
+            {
+                { "nation", api.Nation },
+                { "c", "dispatch" },
+                { "dispatch", "add" },
+                { "category", category.ToString() },
+                { "subcategory", subCategory.ToString() },
+                { "title", WebUtility.UrlEncode(title) },
+                { "text", WebUtility.UrlEncode(text) },
+                { "mode", "execute" },
+                { "token", token }
+            };
+            var resp = api.API(nvc, null, api.Pin);
+            string xml = Utilities.StrResp(resp);
+            var nodelist = Utilities.Parse(xml, "*");
+            return nodelist;
+        }
+
         public static List<CensusNode> GetCensus(this DotNS api, string name, Census stat, long fromTS = -1, long toTS = -1)
         {
             var nvc = new NameValueCollection();
