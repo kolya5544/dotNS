@@ -13,9 +13,9 @@
     <RepositoryUrl>https://github.com/kolya5544/dotNS</RepositoryUrl>
     <RepositoryType>public</RepositoryType>
     <PackageTags>nationstates, rest, xml, api, library</PackageTags>
-    <Version>0.5.1</Version>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
-    <FileVersion>0.5.0.0</FileVersion>
+    <Version>0.5.2</Version>
+    <AssemblyVersion>0.5.2.0</AssemblyVersion>
+    <FileVersion>0.5.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
