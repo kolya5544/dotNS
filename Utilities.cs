@@ -50,14 +50,35 @@ namespace dotNS
             return response;
         }
 
+        static readonly Regex InvalidXmlChars = new Regex(@"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", RegexOptions.Compiled);
+
+        static readonly Regex BareAmp = new Regex("&(?!#(?:x[0-9A-Fa-f]+|\\d+);|[A-Za-z][A-Za-z0-9]*;)", RegexOptions.Compiled);
+
         public static XmlNodeList Parse(string xml, string path = "/NATION/*")
         {
-            xml = WebUtility.HtmlDecode(xml);
-            xml = Regex.Replace(xml, "&(?!(amp|apos|quot|lt|gt);)", "&amp;");
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xml);
-            var nodes = doc.SelectNodes(path);
-            return nodes;
+            // 1) strip illegal XML 1.0 control chars
+            xml = InvalidXmlChars.Replace(xml, "");
+
+            // 2) fix bare ampersands (leave numeric and named entities intact)
+            xml = BareAmp.Replace(xml, "&amp;");
+
+            var settings = new XmlReaderSettings
+            {
+                CheckCharacters = false,               // ignore remaining invalid ranges
+                DtdProcessing = DtdProcessing.Prohibit,
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                ConformanceLevel = ConformanceLevel.Document
+            };
+
+            using (var sr = new StringReader(xml))
+            using (var xr = XmlReader.Create(sr, settings))
+            {
+                var doc = new XmlDocument { XmlResolver = null };
+                doc.Load(xr);
+
+                return doc.SelectNodes(path);
+            }
         }
 
         public static XmlNodeList TakeNodes(this XmlNodeList nodes, string path, int depth = 0)
