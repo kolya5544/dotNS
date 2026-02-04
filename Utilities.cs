@@ -52,14 +52,48 @@ namespace dotNS
 
         static readonly Regex InvalidXmlChars = new Regex(@"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", RegexOptions.Compiled);
 
-        static readonly Regex BareAmp = new Regex("&(?!#(?:x[0-9A-Fa-f]+|\\d+);|[A-Za-z][A-Za-z0-9]*;)", RegexOptions.Compiled);
+        static readonly Regex BareAmp = new Regex(
+            "&(?!#(?:x[0-9A-Fa-f]+|\\d+);|(?:amp|lt|gt|quot|apos);)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase
+        );
+
+
+        static readonly Regex HtmlVoidTags = new Regex(
+            @"<(?<tag>img|br|hr|meta|link|input|source|area|base|col|embed|param|track|wbr)\b(?<attrs>[^>]*?)(?<!/)>",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase
+        );
+
+        static readonly Regex HtmlNamedEntity = new Regex(
+            @"&(?<name>[A-Za-z][A-Za-z0-9]+);",
+            RegexOptions.Compiled
+        );
+
+        static readonly HashSet<string> XmlPredefinedEntities = new HashSet<string>(
+            new[] { "amp", "lt", "gt", "quot", "apos" },
+            StringComparer.OrdinalIgnoreCase
+        );
+
 
         public static XmlNodeList Parse(string xml, string path = "/NATION/*")
         {
             // 1) strip illegal XML 1.0 control chars
             xml = InvalidXmlChars.Replace(xml, "");
 
-            // 2) fix bare ampersands (leave numeric and named entities intact)
+            // 2) convert HTML void tags (<img>, <br>, ...) into XML-safe self-closed tags
+            xml = HtmlVoidTags.Replace(xml, "<${tag}${attrs} />");
+
+            // 3) decode HTML named entities (XML only supports amp/lt/gt/quot/apos by name)
+            xml = HtmlNamedEntity.Replace(xml, m =>
+            {
+                var name = m.Groups["name"].Value;
+                if (XmlPredefinedEntities.Contains(name))
+                    return m.Value;
+
+                // WebUtility.HtmlDecode is safe here for named entities like &Ecirc; -> Ê
+                return WebUtility.HtmlDecode(m.Value);
+            });
+
+            // 4) fix bare ampersands (leave numeric and named entities intact)
             xml = BareAmp.Replace(xml, "&amp;");
 
             var settings = new XmlReaderSettings
